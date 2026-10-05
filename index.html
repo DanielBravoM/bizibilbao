@@ -1,0 +1,1041 @@
+<title>BiziBilbao</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Inter:wght@400;500;600&display=swap');
+
+  :root {
+    --bg:        #F2F5F3;
+    --surface:   #FFFFFF;
+    --surface2:  #E7EDE9;
+    --border:    #CDD8D1;
+    --fg:        #192420;
+    --fg2:       #4A6058;
+    --fg3:       #8AA098;
+    --accent:    #1A7A52;
+    --accent-l:  #E8F5EF;
+    --green:     #1A7A52;
+    --green-l:   #E8F5EF;
+    --yellow:    #A07010;
+    --yellow-l:  #FDF4DC;
+    --red:       #B83030;
+    --red-l:     #FDECEA;
+    --sidebar-w: 280px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg:       #101C15; --surface:  #182820; --surface2: #1F3428;
+      --border:   #2A4535; --fg:       #E5F0EA; --fg2:      #90B8A0;
+      --fg3:      #507060; --accent:   #3DC87A; --accent-l: #0D2B1A;
+      --green:    #3DC87A; --green-l:  #0D2B1A; --yellow:   #D4A030;
+      --yellow-l: #2B1E05; --red:      #E05050; --red-l:    #2B0D0D;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg:       #101C15; --surface:  #182820; --surface2: #1F3428;
+    --border:   #2A4535; --fg:       #E5F0EA; --fg2:      #90B8A0;
+    --fg3:      #507060; --accent:   #3DC87A; --accent-l: #0D2B1A;
+    --green:    #3DC87A; --green-l:  #0D2B1A; --yellow:   #D4A030;
+    --yellow-l: #2B1E05; --red:      #E05050; --red-l:    #2B0D0D;
+    color-scheme: dark;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; }
+  html, body { height: 100%; }
+  body {
+    background: var(--bg); color: var(--fg);
+    font-family: 'Inter', system-ui, sans-serif; font-size: 14px; line-height: 1.5;
+    display: flex; flex-direction: column; min-height: 100%;
+  }
+  h1,h2,h3,h4 { font-family: 'Sora', sans-serif; text-wrap: balance; }
+
+  /* ── TOP NAVBAR ── */
+  .navbar {
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 0; padding: 0 24px; height: 56px;
+    flex-shrink: 0; position: sticky; top: 0; z-index: 100;
+  }
+  .navbar-logo {
+    font-family: 'Sora', sans-serif; font-weight: 700; font-size: 20px;
+    color: var(--accent); letter-spacing: -.4px; margin-right: 32px; white-space: nowrap;
+  }
+  .navbar-logo span { color: var(--fg); }
+  .navbar-tagline { font-size: 12px; color: var(--fg3); border-left: 1px solid var(--border); padding-left: 16px; }
+  .navbar-nav { display: flex; gap: 4px; margin-left: auto; }
+  .nav-tab {
+    padding: 7px 16px; border-radius: 8px; font-size: 13px; font-weight: 600;
+    color: var(--fg3); cursor: pointer; border: none; background: transparent;
+    font-family: 'Inter', sans-serif; transition: background .15s, color .15s;
+  }
+  .nav-tab.active { background: var(--accent-l); color: var(--accent); }
+  .nav-tab:hover:not(.active) { background: var(--surface2); color: var(--fg); }
+
+  /* ── LAYOUT ── */
+  .app-layout {
+    display: flex; flex: 1; min-height: 0; overflow: hidden;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width: var(--sidebar-w); flex-shrink: 0; background: var(--surface);
+    border-right: 1px solid var(--border); overflow-y: auto;
+    display: flex; flex-direction: column;
+  }
+  .sidebar-hero {
+    background: linear-gradient(150deg, var(--accent) 0%, #0E5C3A 100%);
+    padding: 20px 20px 16px; color: #fff; flex-shrink: 0;
+  }
+  .sidebar-hero .eyebrow { font-size: 10px; font-weight: 600; letter-spacing: .8px; opacity: .72; margin-bottom: 4px; }
+  .sidebar-hero h2 { font-size: 17px; font-weight: 700; line-height: 1.2; margin-bottom: 4px; }
+  .sidebar-hero p  { font-size: 12px; opacity: .82; line-height: 1.45; }
+
+  .sidebar-section { padding: 14px 16px; border-bottom: 1px solid var(--border); }
+  .sidebar-section h4 { font-size: 12px; font-weight: 600; color: var(--fg); margin-bottom: 10px; }
+  .option-row { display: flex; gap: 6px; flex-wrap: wrap; }
+  .opt {
+    background: var(--surface2); border: 1.5px solid var(--border); border-radius: 8px;
+    padding: 5px 10px; font-size: 11px; color: var(--fg2); font-weight: 500; cursor: pointer;
+    transition: all .15s;
+  }
+  .opt.selected { background: var(--accent-l); border-color: var(--accent); color: var(--accent); font-weight: 600; }
+
+  .criteria-section { padding: 14px 16px; }
+  .criteria-section h4 { font-size: 12px; font-weight: 600; color: var(--fg); margin-bottom: 12px; }
+  .slider-row { display: flex; align-items: center; gap: 8px; margin-bottom: 9px; }
+  .slider-lbl { font-size: 12px; color: var(--fg2); flex: 1; min-width: 0; }
+  .slider-stars { display: flex; gap: 2px; flex-shrink: 0; }
+  .star { font-size: 16px; cursor: pointer; transition: transform .1s; user-select: none; line-height: 1; }
+  .star:hover { transform: scale(1.2); }
+  .star.on  { color: var(--accent); }
+  .star.off { color: var(--border); }
+
+  .cta-btn {
+    margin: 12px 16px 16px; background: var(--accent); color: #fff; border-radius: 10px;
+    padding: 11px 16px; font-family: 'Sora', sans-serif; font-weight: 700; font-size: 13px;
+    text-align: center; cursor: pointer; transition: opacity .15s; border: none;
+  }
+  .cta-btn:hover { opacity: .88; }
+
+  .profile-recap {
+    padding: 10px 16px; background: var(--accent-l); border-top: 1px solid var(--border);
+    display: flex; gap: 5px; flex-wrap: wrap; align-items: center; flex-shrink: 0;
+  }
+  .profile-recap span { font-size: 11px; font-weight: 600; color: var(--accent); }
+
+  /* ── MAIN CONTENT ── */
+  .main-content {
+    flex: 1; min-width: 0; overflow-y: auto; display: flex; flex-direction: column;
+  }
+
+  /* SCREEN visibility */
+  .screen { display: none; flex: 1; }
+  .screen.active { display: flex; flex-direction: column; }
+
+  /* ── SCREEN: MAPA ── */
+  .map-screen { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+  .map-top-bar {
+    padding: 12px 20px 10px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 12px; flex-shrink: 0;
+  }
+  .map-top-bar h3 { font-size: 15px; font-weight: 700; font-family: 'Sora', sans-serif; }
+  .map-top-bar p  { font-size: 12px; color: var(--fg2); margin-top: 1px; }
+  .badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 99px; font-size: 11px; font-weight: 600; }
+  .badge.green  { background: var(--green-l);  color: var(--green); }
+  .badge.yellow { background: var(--yellow-l); color: var(--yellow); }
+  .badge.red    { background: var(--red-l);    color: var(--red); }
+
+  .map-body { display: flex; flex: 1; min-height: 0; overflow: hidden; }
+  .map-panel {
+    flex: 1; min-width: 0; position: relative; background: var(--surface2);
+    display: flex; align-items: stretch;
+  }
+  .map-panel svg { width: 100%; height: 100%; min-height: 420px; }
+  .map-legend {
+    position: absolute; bottom: 14px; left: 14px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 10px; padding: 8px 12px;
+    display: flex; flex-direction: column; gap: 5px; font-size: 11px; color: var(--fg2);
+    box-shadow: 0 2px 8px rgba(0,0,0,.08);
+  }
+  .legend-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; }
+
+  .ranking-panel {
+    width: 260px; flex-shrink: 0; border-left: 1px solid var(--border);
+    background: var(--surface); overflow-y: auto; display: flex; flex-direction: column;
+  }
+  .ranking-panel .panel-header {
+    padding: 12px 14px 8px; border-bottom: 1px solid var(--border); flex-shrink: 0;
+  }
+  .ranking-panel .panel-header h4 { font-size: 13px; font-weight: 700; }
+  .ranking-panel .panel-header p  { font-size: 11px; color: var(--fg3); margin-top: 1px; }
+
+  .rank-list { padding: 10px 12px; display: flex; flex-direction: column; gap: 7px; }
+  .rank-card {
+    border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; background: var(--surface);
+    display: flex; align-items: center; gap: 10px; cursor: pointer; transition: border-color .15s, background .15s;
+  }
+  .rank-card:hover { border-color: var(--accent); background: var(--accent-l); }
+  .rank-num { font-family: 'Sora', sans-serif; font-size: 18px; font-weight: 700; color: var(--fg3); width: 24px; flex-shrink: 0; font-variant-numeric: tabular-nums; }
+  .rank-num.top { color: var(--accent); }
+  .rank-info { flex: 1; min-width: 0; }
+  .rank-info h4 { font-size: 13px; font-weight: 600; margin-bottom: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .rank-info p  { font-size: 10px; color: var(--fg2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .rank-score { font-family: 'Sora', sans-serif; font-size: 16px; font-weight: 700; font-variant-numeric: tabular-nums; flex-shrink: 0; }
+
+  /* ── SCREEN: FICHA ── */
+  .ficha-screen { max-width: 780px; margin: 0 auto; padding: 24px 28px 40px; width: 100%; }
+  .barrio-hero { background: var(--accent); color: #fff; padding: 24px 28px 20px; border-radius: 16px; margin-bottom: 20px; }
+  .barrio-hero .eyebrow { font-size: 10px; font-weight: 600; letter-spacing: .6px; opacity: .72; margin-bottom: 6px; }
+  .barrio-hero h2 { font-size: 28px; font-weight: 700; margin-bottom: 6px; }
+  .barrio-hero p  { font-size: 13px; opacity: .85; }
+  .score-pill {
+    display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,.2);
+    border-radius: 99px; padding: 5px 14px; font-family: 'Sora', sans-serif; font-weight: 700; font-size: 16px; margin-top: 12px;
+  }
+  .criteria-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 18px; }
+  @media (min-width: 600px) { .criteria-grid { grid-template-columns: repeat(4, 1fr); } }
+  .crit-card { background: var(--surface2); border-radius: 12px; padding: 14px; }
+  .crit-icon  { font-size: 20px; margin-bottom: 5px; }
+  .crit-label { font-size: 10px; font-weight: 600; color: var(--fg3); margin-bottom: 3px; }
+  .crit-val   { font-size: 15px; font-weight: 700; color: var(--fg); }
+  .crit-sub   { font-size: 11px; color: var(--fg2); margin-top: 2px; }
+  .summary-box {
+    background: var(--accent-l); border-left: 3px solid var(--accent);
+    border-radius: 0 12px 12px 0; padding: 14px 16px; font-size: 13px; color: var(--fg); line-height: 1.6;
+    margin-bottom: 16px;
+  }
+  .pros-cons { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .pro-col h4 { font-size: 12px; font-weight: 700; color: var(--green); margin-bottom: 8px; }
+  .con-col h4 { font-size: 12px; font-weight: 700; color: var(--red);   margin-bottom: 8px; }
+  .pc-item    { font-size: 12px; color: var(--fg2); margin-bottom: 5px; }
+  .ficha-cta { display: flex; gap: 10px; }
+  .btn-secondary {
+    flex: 1; background: var(--surface2); color: var(--fg); border: 1px solid var(--border);
+    border-radius: 10px; padding: 11px 16px; font-family: 'Sora', sans-serif; font-weight: 600;
+    font-size: 13px; text-align: center; cursor: pointer; transition: background .15s;
+  }
+  .btn-secondary:hover { background: var(--border); }
+  .btn-primary {
+    flex: 1; background: var(--accent); color: #fff; border: none;
+    border-radius: 10px; padding: 11px 16px; font-family: 'Sora', sans-serif; font-weight: 700;
+    font-size: 13px; text-align: center; cursor: pointer; transition: opacity .15s;
+  }
+  .btn-primary:hover { opacity: .88; }
+
+  /* ── SCREEN: COMPARAR ── */
+  .comparar-screen { max-width: 860px; margin: 0 auto; padding: 24px 28px 40px; width: 100%; }
+  .comparar-screen h2 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+  .comparar-screen .subtitle { font-size: 13px; color: var(--fg2); margin-bottom: 20px; }
+  .compare-table-wrap { overflow-x: auto; border-radius: 12px; border: 1px solid var(--border); }
+  .compare-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare-table th {
+    background: var(--surface2); color: var(--fg2); font-weight: 600;
+    padding: 10px 14px; text-align: center; font-size: 12px; border-bottom: 1px solid var(--border);
+  }
+  .compare-table th:first-child { text-align: left; }
+  .compare-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); text-align: center; color: var(--fg); font-variant-numeric: tabular-nums; }
+  .compare-table td:first-child { text-align: left; font-weight: 500; color: var(--fg2); font-size: 12px; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table .winner { font-weight: 700; color: var(--accent); }
+  .compare-table .barrio-head { font-family: 'Sora', sans-serif; font-weight: 700; font-size: 13px; color: var(--fg); }
+  .dataset-note {
+    margin-top: 16px; background: var(--surface2); border-radius: 10px; padding: 12px 16px;
+    font-size: 12px; color: var(--fg2); line-height: 1.5;
+  }
+  .dataset-note strong { color: var(--fg); }
+
+  /* ── SCREEN: PERFIL (fallback if needed) ── */
+  .perfil-screen { max-width: 600px; margin: 0 auto; padding: 32px 28px; width: 100%; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 700px) {
+    :root { --sidebar-w: 100%; }
+    .app-layout { flex-direction: column; }
+    .sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--border); max-height: 50vh; }
+    .map-body { flex-direction: column; }
+    .ranking-panel { width: 100%; border-left: none; border-top: 1px solid var(--border); max-height: 280px; }
+    .navbar-tagline { display: none; }
+  }
+</style>
+
+<!-- ══ NAVBAR ══ -->
+<nav class="navbar">
+  <span class="navbar-logo">Bizi<span>Bilbao</span></span>
+  <span class="navbar-tagline">Encuentra tu barrio en Bilbao</span>
+  <div class="navbar-nav">
+    <button class="nav-tab active" onclick="goTo(0)">🏠 Tu perfil</button>
+    <button class="nav-tab" onclick="goTo(1)">🗺️ Mapa</button>
+    <button class="nav-tab" onclick="goTo(2)">📄 Ficha</button>
+    <button class="nav-tab" onclick="goTo(3)">⚖️ Comparar</button>
+  </div>
+</nav>
+
+<div class="app-layout">
+
+  <!-- ══ SIDEBAR ══ -->
+  <aside class="sidebar">
+    <div class="sidebar-hero">
+      <div class="eyebrow">CONFIGURA TU BÚSQUEDA</div>
+      <h2>¿Qué buscas en Bilbao?</h2>
+      <p>Ajusta las estrellas y el ranking cambia en tiempo real.</p>
+    </div>
+
+    <div class="sidebar-section">
+      <h4>¿Cuál es tu situación?</h4>
+      <div class="option-row">
+        <span class="opt selected">👫 Pareja</span>
+        <span class="opt">👨‍👩‍👧 Familia</span>
+        <span class="opt">🧑 Solo/a</span>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+    <div class="sidebar-section">
+      <h4>¿Cómo te moverás?</h4>
+      <div class="option-row">
+        <span class="opt selected">🚇 Metro</span>
+        <span class="opt">🚌 Bus</span>
+        <span class="opt selected">🚶 A pie</span>
+        <span class="opt">🚲 Bici</span>
+      </div>
+    </div>
+
+    <div class="criteria-section">
+      <h4>¿Qué valoras más? Toca las ★</h4>
+      <div class="slider-row">
+        <span class="slider-lbl">🌳 Zonas verdes</span>
+        <div class="slider-stars" data-key="verde">
+          <span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star off">★</span><span class="star off">★</span>
+        </div>
+      </div>
+      <div class="slider-row">
+        <span class="slider-lbl">🏫 Colegios</span>
+        <div class="slider-stars" data-key="colegios">
+          <span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star off">★</span>
+        </div>
+      </div>
+      <div class="slider-row">
+        <span class="slider-lbl">🔇 Tranquilidad</span>
+        <div class="slider-stars" data-key="tranquilidad">
+          <span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span>
+        </div>
+      </div>
+      <div class="slider-row">
+        <span class="slider-lbl">🚇 Metro cerca</span>
+        <div class="slider-stars" data-key="metro">
+          <span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star off">★</span>
+        </div>
+      </div>
+      <div class="slider-row">
+        <span class="slider-lbl">💶 Precio bajo</span>
+        <div class="slider-stars" data-key="precio">
+          <span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star off">★</span><span class="star off">★</span>
+        </div>
+      </div>
+      <div class="slider-row">
+        <span class="slider-lbl">🎉 Ocio / Vida</span>
+        <div class="slider-stars" data-key="ocio">
+          <span class="star on">★</span><span class="star on">★</span><span class="star off">★</span><span class="star off">★</span><span class="star off">★</span>
+        </div>
+      </div>
+    </div>
+
+    <button class="cta-btn" onclick="recalcAndGo()">Ver ranking de barrios →</button>
+
+    <div class="profile-recap" id="profileRecap">
+      <span>Calculando…</span>
+    </div>
+  </aside>
+
+  <!-- ══ MAIN CONTENT ══ -->
+  <main class="main-content">
+
+    <!-- SCREEN 0: PERFIL (redirect message) -->
+    <div class="screen active" id="s0">
+      <div style="flex:1; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:16px; padding:40px 24px; text-align:center;">
+        <div style="font-size:48px">🏙️</div>
+        <h2 style="font-size:22px; font-weight:700">Bienvenido a BiziBilbao</h2>
+        <p style="color:var(--fg2); max-width:420px; line-height:1.6">Ajusta las ★ en el panel izquierdo para ponderar lo que más te importa. El ranking y el mapa se recalculan al instante con datos reales del Ayuntamiento de Bilbao.</p>
+        <button class="btn-primary" style="max-width:240px; margin-top:4px" onclick="recalcAndGo()">Ver mapa y ranking →</button>
+        <p style="font-size:11px; color:var(--fg3)">35 barrios analizados · Open Data Bilbao · Eustat · Metro Bilbao GTFS · Mapa Acústico 2023</p>
+      </div>
+    </div>
+
+    <!-- SCREEN 1: MAPA -->
+    <div class="screen" id="s1">
+      <div class="map-screen">
+        <div class="map-top-bar">
+          <div>
+            <h3>Mapa de compatibilidad</h3>
+            <p id="mapSub">35 barrios analizados · coloreados según tu perfil</p>
+          </div>
+        </div>
+        <div class="map-body">
+          <div class="map-panel">
+            <svg id="mapSvg" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mapa de barrios de Bilbao coloreado por compatibilidad" preserveAspectRatio="xMidYMid meet">
+              <rect width="600" height="400" fill="#D4E6D9" opacity=".25"/>
+              <!-- Ría del Nervión -->
+              <path d="M10 215 Q100 200 200 210 Q310 218 400 205 Q490 195 600 198" stroke="#A8C8D8" stroke-width="18" fill="none" opacity=".55"/>
+              <!-- Barrios: escala 600×400, posiciones proporcionales -->
+              <ellipse id="map-Deusto" cx="130" cy="145" rx="52" ry="33" fill="#aaa" opacity=".85"/>
+              <text x="130" y="149" text-anchor="middle" font-size="11" font-weight="700" fill="white" font-family="Sora,sans-serif">Deusto</text>
+              <text id="maplbl-Deusto" x="130" y="163" text-anchor="middle" font-size="10" fill="white" opacity=".95">-</text>
+
+              <ellipse id="map-Indautxu" cx="285" cy="150" rx="55" ry="35" fill="#aaa" opacity=".85"/>
+              <text x="285" y="154" text-anchor="middle" font-size="11" font-weight="700" fill="white" font-family="Sora,sans-serif">Indautxu</text>
+              <text id="maplbl-Indautxu" x="285" y="168" text-anchor="middle" font-size="10" fill="white" opacity=".95">-</text>
+
+              <ellipse id="map-Abando" cx="408" cy="164" rx="46" ry="29" fill="#aaa" opacity=".85"/>
+              <text x="408" y="168" text-anchor="middle" font-size="10.5" font-weight="700" fill="white" font-family="Sora,sans-serif">Abando</text>
+              <text id="maplbl-Abando" x="408" y="181" text-anchor="middle" font-size="10" fill="white" opacity=".95">-</text>
+
+              <ellipse id="map-CascoViejo" cx="502" cy="185" rx="40" ry="25" fill="#aaa" opacity=".85"/>
+              <text x="502" y="183" text-anchor="middle" font-size="9" font-weight="700" fill="white" font-family="Sora,sans-serif">Casco</text>
+              <text x="502" y="194" text-anchor="middle" font-size="9" font-weight="700" fill="white" font-family="Sora,sans-serif">Viejo</text>
+              <text id="maplbl-CascoViejo" x="502" y="208" text-anchor="middle" font-size="9.5" fill="white" opacity=".95">-</text>
+
+              <ellipse id="map-Rekalde" cx="270" cy="268" rx="46" ry="28" fill="#aaa" opacity=".85"/>
+              <text x="270" y="272" text-anchor="middle" font-size="11" font-weight="700" fill="white" font-family="Sora,sans-serif">Rekalde</text>
+              <text id="maplbl-Rekalde" x="270" y="285" text-anchor="middle" font-size="10" fill="white" opacity=".95">-</text>
+
+              <ellipse id="map-Begoña" cx="406" cy="102" rx="40" ry="25" fill="#aaa" opacity=".85"/>
+              <text x="406" y="106" text-anchor="middle" font-size="10" font-weight="700" fill="white" font-family="Sora,sans-serif">Begoña</text>
+              <text id="maplbl-Begoña" x="406" y="119" text-anchor="middle" font-size="10" fill="white" opacity=".95">-</text>
+
+              <ellipse id="map-Txurdinaga" cx="193" cy="84" rx="42" ry="26" fill="#aaa" opacity=".85"/>
+              <text x="193" y="88" text-anchor="middle" font-size="9.5" font-weight="700" fill="white" font-family="Sora,sans-serif">Txurdinaga</text>
+              <text id="maplbl-Txurdinaga" x="193" y="101" text-anchor="middle" font-size="9" fill="white" opacity=".95">-</text>
+
+              <ellipse id="map-Otxarkoaga" cx="62" cy="83" rx="40" ry="24" fill="#aaa" opacity=".85"/>
+              <text x="62" y="83" text-anchor="middle" font-size="8.5" font-weight="700" fill="white" font-family="Sora,sans-serif">Otxar-</text>
+              <text x="62" y="95" text-anchor="middle" font-size="8.5" font-weight="700" fill="white" font-family="Sora,sans-serif">koaga</text>
+              <text id="maplbl-Otxarkoaga" x="62" y="108" text-anchor="middle" font-size="9" fill="white" opacity=".95">-</text>
+
+              <ellipse id="map-Santutxu" cx="335" cy="85" rx="40" ry="24" fill="#aaa" opacity=".85"/>
+              <text x="335" y="89" text-anchor="middle" font-size="9.5" font-weight="700" fill="white" font-family="Sora,sans-serif">Santutxu</text>
+              <text id="maplbl-Santutxu" x="335" y="102" text-anchor="middle" font-size="9" fill="white" opacity=".95">-</text>
+
+              <ellipse id="map-Basurto" cx="177" cy="246" rx="38" ry="24" fill="#aaa" opacity=".85"/>
+              <text x="177" y="250" text-anchor="middle" font-size="9.5" font-weight="700" fill="white" font-family="Sora,sans-serif">Basurto</text>
+              <text id="maplbl-Basurto" x="177" y="263" text-anchor="middle" font-size="9" fill="white" opacity=".95">-</text>
+
+              <ellipse id="map-Zorrotza" cx="44" cy="217" rx="34" ry="21" fill="#aaa" opacity=".80"/>
+              <text x="44" y="221" text-anchor="middle" font-size="9" font-weight="700" fill="white" font-family="Sora,sans-serif">Zorrotza</text>
+              <text id="maplbl-Zorrotza" x="44" y="234" text-anchor="middle" font-size="8.5" fill="white" opacity=".95">-</text>
+
+              <ellipse id="map-Uribarri" cx="360" cy="266" rx="38" ry="23" fill="#aaa" opacity=".80"/>
+              <text x="360" y="270" text-anchor="middle" font-size="9.5" font-weight="700" fill="white" font-family="Sora,sans-serif">Uribarri</text>
+              <text id="maplbl-Uribarri" x="360" y="283" text-anchor="middle" font-size="9" fill="white" opacity=".95">-</text>
+
+              <ellipse id="map-Ibarrekolanda" cx="496" cy="278" rx="44" ry="26" fill="#aaa" opacity=".80"/>
+              <text x="496" y="276" text-anchor="middle" font-size="8" font-weight="700" fill="white" font-family="Sora,sans-serif">Ibarre-</text>
+              <text x="496" y="287" text-anchor="middle" font-size="8" font-weight="700" fill="white" font-family="Sora,sans-serif">kolanda</text>
+              <text id="maplbl-Ibarrekolanda" x="496" y="300" text-anchor="middle" font-size="8.5" fill="white" opacity=".95">-</text>
+
+              <ellipse id="map-LaRibera" cx="86" cy="178" rx="30" ry="18" fill="#aaa" opacity=".80"/>
+              <text x="86" y="182" text-anchor="middle" font-size="7.5" font-weight="700" fill="white" font-family="Sora,sans-serif">La Ribera</text>
+              <text id="maplbl-LaRibera" x="86" y="193" text-anchor="middle" font-size="7.5" fill="white" opacity=".9">-</text>
+
+              <ellipse id="map-Elorrieta" cx="84" cy="195" rx="26" ry="15" fill="#aaa" opacity=".76"/>
+              <text x="84" y="198" text-anchor="middle" font-size="7" font-weight="700" fill="white" font-family="Sora,sans-serif">Elorrieta</text>
+              <text id="maplbl-Elorrieta" x="84" y="208" text-anchor="middle" font-size="7" fill="white" opacity=".9">-</text>
+
+              <ellipse id="map-Arangoiti" cx="92" cy="106" rx="30" ry="18" fill="#aaa" opacity=".80"/>
+              <text x="92" y="110" text-anchor="middle" font-size="7.5" font-weight="700" fill="white" font-family="Sora,sans-serif">Arangoiti</text>
+              <text id="maplbl-Arangoiti" x="92" y="121" text-anchor="middle" font-size="7.5" fill="white" opacity=".9">-</text>
+
+              <ellipse id="map-Bolueta" cx="432" cy="66" rx="30" ry="17" fill="#aaa" opacity=".78"/>
+              <text x="432" y="70" text-anchor="middle" font-size="7.5" font-weight="700" fill="white" font-family="Sora,sans-serif">Bolueta</text>
+              <text id="maplbl-Bolueta" x="432" y="81" text-anchor="middle" font-size="7.5" fill="white" opacity=".9">-</text>
+
+              <ellipse id="map-Urazurrutia" cx="456" cy="80" rx="33" ry="18" fill="#aaa" opacity=".78"/>
+              <text x="456" y="83" text-anchor="middle" font-size="7" font-weight="700" fill="white" font-family="Sora,sans-serif">Urazurrutia</text>
+              <text id="maplbl-Urazurrutia" x="456" y="94" text-anchor="middle" font-size="7" fill="white" opacity=".9">-</text>
+
+              <ellipse id="map-Atxuri" cx="528" cy="164" rx="28" ry="17" fill="#aaa" opacity=".78"/>
+              <text x="528" y="168" text-anchor="middle" font-size="8" font-weight="700" fill="white" font-family="Sora,sans-serif">Atxuri</text>
+              <text id="maplbl-Atxuri" x="528" y="180" text-anchor="middle" font-size="8" fill="white" opacity=".9">-</text>
+
+              <ellipse id="map-Solokoetxe" cx="553" cy="188" rx="30" ry="17" fill="#aaa" opacity=".78"/>
+              <text x="553" y="192" text-anchor="middle" font-size="7" font-weight="700" fill="white" font-family="Sora,sans-serif">Solokoetxe</text>
+              <text id="maplbl-Solokoetxe" x="553" y="203" text-anchor="middle" font-size="7" fill="white" opacity=".9">-</text>
+
+              <ellipse id="map-BilbaoLaVieja" cx="567" cy="216" rx="30" ry="17" fill="#aaa" opacity=".78"/>
+              <text x="567" y="214" text-anchor="middle" font-size="7" font-weight="700" fill="white" font-family="Sora,sans-serif">Bilbao</text>
+              <text x="567" y="224" text-anchor="middle" font-size="7" font-weight="700" fill="white" font-family="Sora,sans-serif">La Vieja</text>
+              <text id="maplbl-BilbaoLaVieja" x="567" y="236" text-anchor="middle" font-size="7" fill="white" opacity=".9">-</text>
+
+              <ellipse id="map-Miribilla" cx="542" cy="255" rx="32" ry="18" fill="#aaa" opacity=".78"/>
+              <text x="542" y="259" text-anchor="middle" font-size="8" font-weight="700" fill="white" font-family="Sora,sans-serif">Miribilla</text>
+              <text id="maplbl-Miribilla" x="542" y="271" text-anchor="middle" font-size="8" fill="white" opacity=".9">-</text>
+
+              <ellipse id="map-SanFrancisco" cx="384" cy="210" rx="34" ry="19" fill="#aaa" opacity=".78"/>
+              <text x="384" y="213" text-anchor="middle" font-size="7.5" font-weight="700" fill="white" font-family="Sora,sans-serif">San Francisco</text>
+              <text id="maplbl-SanFrancisco" x="384" y="225" text-anchor="middle" font-size="7.5" fill="white" opacity=".9">-</text>
+
+              <ellipse id="map-Larraskitu" cx="207" cy="325" rx="30" ry="17" fill="#aaa" opacity=".78"/>
+              <text x="207" y="329" text-anchor="middle" font-size="7.5" font-weight="700" fill="white" font-family="Sora,sans-serif">Larraskitu</text>
+              <text id="maplbl-Larraskitu" x="207" y="340" text-anchor="middle" font-size="7.5" fill="white" opacity=".9">-</text>
+
+              <ellipse id="map-Iralabarri" cx="246" cy="308" rx="30" ry="17" fill="#aaa" opacity=".78"/>
+              <text x="246" y="312" text-anchor="middle" font-size="7.5" font-weight="700" fill="white" font-family="Sora,sans-serif">Iralabarri</text>
+              <text id="maplbl-Iralabarri" x="246" y="323" text-anchor="middle" font-size="7.5" fill="white" opacity=".9">-</text>
+
+              <ellipse id="map-IturrigorriPenascal" cx="278" cy="330" rx="36" ry="17" fill="#aaa" opacity=".75"/>
+              <text x="278" y="328" text-anchor="middle" font-size="7" font-weight="700" fill="white" font-family="Sora,sans-serif">Iturrigorri-</text>
+              <text x="278" y="339" text-anchor="middle" font-size="7" font-weight="700" fill="white" font-family="Sora,sans-serif">Peñascal</text>
+              <text id="maplbl-IturrigorriPenascal" x="278" y="350" text-anchor="middle" font-size="7" fill="white" opacity=".9">-</text>
+
+              <ellipse id="map-Masustegi" cx="325" cy="316" rx="30" ry="17" fill="#aaa" opacity=".78"/>
+              <text x="325" y="320" text-anchor="middle" font-size="7.5" font-weight="700" fill="white" font-family="Sora,sans-serif">Masustegi</text>
+              <text id="maplbl-Masustegi" x="325" y="331" text-anchor="middle" font-size="7.5" fill="white" opacity=".9">-</text>
+
+              <ellipse id="map-SanAdrian" cx="382" cy="295" rx="30" ry="17" fill="#aaa" opacity=".78"/>
+              <text x="382" y="299" text-anchor="middle" font-size="7.5" font-weight="700" fill="white" font-family="Sora,sans-serif">San Adrián</text>
+              <text id="maplbl-SanAdrian" x="382" y="310" text-anchor="middle" font-size="7.5" fill="white" opacity=".9">-</text>
+
+              <ellipse id="map-Zurbaran" cx="412" cy="286" rx="30" ry="17" fill="#aaa" opacity=".78"/>
+              <text x="412" y="290" text-anchor="middle" font-size="7.5" font-weight="700" fill="white" font-family="Sora,sans-serif">Zurbaran</text>
+              <text id="maplbl-Zurbaran" x="412" y="301" text-anchor="middle" font-size="7.5" fill="white" opacity=".9">-</text>
+
+              <ellipse id="map-Altamira" cx="142" cy="278" rx="30" ry="17" fill="#aaa" opacity=".78"/>
+              <text x="142" y="282" text-anchor="middle" font-size="7.5" font-weight="700" fill="white" font-family="Sora,sans-serif">Altamira</text>
+              <text id="maplbl-Altamira" x="142" y="293" text-anchor="middle" font-size="7.5" fill="white" opacity=".9">-</text>
+
+              <!-- Pin top 1 -->
+              <circle id="mapPin" cx="285" cy="148" r="8" fill="white" stroke="#1A7A52" stroke-width="3" opacity="0"/>
+            </svg>
+            <div class="map-legend">
+              <div><span class="legend-dot" style="background:#1A7A52"></span>Alta compatibilidad (≥7)</div>
+              <div><span class="legend-dot" style="background:#D4900A"></span>Media (5.5–7)</div>
+              <div><span class="legend-dot" style="background:#B83030"></span>Baja (&lt;5.5)</div>
+            </div>
+          </div>
+
+          <!-- Ranking lateral -->
+          <div class="ranking-panel">
+            <div class="panel-header">
+              <h4>Ranking para tu perfil</h4>
+              <p>Haz clic para ver la ficha</p>
+            </div>
+            <div class="rank-list" id="rankingList"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 2: FICHA -->
+    <div class="screen" id="s2">
+      <div class="ficha-screen">
+        <div class="barrio-hero" id="fichaHero">
+          <div class="eyebrow" id="fichaDistr">BILBAO</div>
+          <h2 id="fichaNombre">—</h2>
+          <p id="fichaDesc">El barrio que mejor encaja con tu perfil</p>
+          <div class="score-pill" id="fichaScore">⭐ — / 10</div>
+        </div>
+        <div class="criteria-grid" id="fichaGrid"><!-- JS --></div>
+        <div class="summary-box" id="fichaSummary"></div>
+        <div class="pros-cons" id="fichaProsCons"></div>
+        <div class="ficha-cta">
+          <button class="btn-secondary" onclick="goTo(1)">← Volver al mapa</button>
+          <button class="btn-primary" onclick="goTo(3)">Comparar con otros →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 3: COMPARAR -->
+    <div class="screen" id="s3">
+      <div class="comparar-screen">
+  <!-- ══ MAIN CONTENT ══ -->
+  <main class="main-content">
+
+    <!-- SCREEN 0: PERFIL (redirect message) -->
+    <div class="screen active" id="s0">
+      <div style="flex:1; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:16px; padding:40px 24px; text-align:center;">
+        <div style="font-size:48px">🏙️</div>
+        <h2 style="font-size:22px; font-weight:700">Bienvenido a BiziBilbao</h2>
+        <p style="color:var(--fg2); max-width:420px; line-height:1.6">Ajusta las ★ en el panel izquierdo para ponderar lo que más te importa. El ranking y el mapa se recalculan al instante con datos reales del Ayuntamiento de Bilbao.</p>
+        <button class="btn-primary" style="max-width:240px; margin-top:4px" onclick="recalcAndGo()">Ver mapa y ranking →</button>
+        <p style="font-size:11px; color:var(--fg3)">35 barrios analizados · Open Data Bilbao · Eustat · Metro Bilbao GTFS · Mapa Acústico 2023</p>
+      </div>
+    </div>
+
+    <!-- SCREEN 1: MAPA -->
+    <div class="screen" id="s1">
+      <div class="map-screen">
+        <div class="map-top-bar">
+          <div>
+            <h3>Mapa de compatibilidad</h3>
+            <p id="mapSub">35 barrios analizados · coloreados según tu perfil</p>
+          </div>
+        </div>
+        <div class="map-body">
+          <div class="map-panel">
+            <svg id="mapSvg" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mapa de barrios de Bilbao coloreado por compatibilidad" preserveAspectRatio="xMidYMid meet">
+              <rect width="600" height="400" fill="#D4E6D9" opacity=".25"/>
+              <!-- Ría del Nervión -->
+              <path d="M10 215 Q100 200 200 210 Q310 218 400 205 Q490 195 600 198" stroke="#A8C8D8" stroke-width="18" fill="none" opacity=".55"/>
+              <!-- Barrios: escala 600×400, posiciones proporcionales -->
+              <ellipse id="map-Deusto" cx="130" cy="145" rx="52" ry="33" fill="#aaa" opacity=".85"/>
+              <text x="130" y="149" text-anchor="middle" font-size="11" font-weight="700" fill="white" font-family="Sora,sans-serif">Deusto</text>
+              <text id="maplbl-Deusto" x="130" y="163" text-anchor="middle" font-size="10" fill="white" opacity=".95">-</text>
+
+              <ellipse id="map-Indautxu" cx="285" cy="150" rx="55" ry="35" fill="#aaa" opacity=".85"/>
+              <text x="285" y="154" text-anchor="middle" font-size="11" font-weight="700" fill="white" font-family="Sora,sans-serif">Indautxu</text>
+              <text id="maplbl-Indautxu" x="285" y="168" text-anchor="middle" font-size="10" fill="white" opacity=".95">-</text>
+
+              <ellipse id="map-Abando" cx="408" cy="164" rx="46" ry="29" fill="#aaa" opacity=".85"/>
+              <text x="408" y="168" text-anchor="middle" font-size="10.5" font-weight="700" fill="white" font-family="Sora,sans-serif">Abando</text>
+              <text id="maplbl-Abando" x="408" y="181" text-anchor="middle" font-size="10" fill="white" opacity=".95">-</text>
+
+              <ellipse id="map-CascoViejo" cx="502" cy="185" rx="40" ry="25" fill="#aaa" opacity=".85"/>
+              <text x="502" y="183" text-anchor="middle" font-size="9" font-weight="700" fill="white" font-family="Sora,sans-serif">Casco</text>
+              <text x="502" y="194" text-anchor="middle" font-size="9" font-weight="700" fill="white" font-family="Sora,sans-serif">Viejo</text>
+              <text id="maplbl-CascoViejo" x="502" y="208" text-anchor="middle" font-size="9.5" fill="white" opacity=".95">-</text>
+
+              <ellipse id="map-Rekalde" cx="270" cy="268" rx="46" ry="28" fill="#aaa" opacity=".85"/>
+              <text x="270" y="272" text-anchor="middle" font-size="11" font-weight="700" fill="white" font-family="Sora,sans-serif">Rekalde</text>
+              <text id="maplbl-Rekalde" x="270" y="285" text-anchor="middle" font-size="10" fill="white" opacity=".95">-</text>
+
+              <ellipse id="map-Begoña" cx="406" cy="102" rx="40" ry="25" fill="#aaa" opacity=".85"/>
+              <text x="406" y="106" text-anchor="middle" font-size="10" font-weight="700" fill="white" font-family="Sora,sans-serif">Begoña</text>
+              <text id="maplbl-Begoña" x="406" y="119" text-anchor="middle" font-size="10" fill="white" opacity=".95">-</text>
+
+              <ellipse id="map-Txurdinaga" cx="193" cy="84" rx="42" ry="26" fill="#aaa" opacity=".85"/>
+              <text x="193" y="88" text-anchor="middle" font-size="9.5" font-weight="700" fill="white" font-family="Sora,sans-serif">Txurdinaga</text>
+              <text id="maplbl-Txurdinaga" x="193" y="101" text-anchor="middle" font-size="9" fill="white" opacity=".95">-</text>
+
+              <ellipse id="map-Otxarkoaga" cx="62" cy="83" rx="40" ry="24" fill="#aaa" opacity=".85"/>
+              <text x="62" y="83" text-anchor="middle" font-size="8.5" font-weight="700" fill="white" font-family="Sora,sans-serif">Otxar-</text>
+              <text x="62" y="95" text-anchor="middle" font-size="8.5" font-weight="700" fill="white" font-family="Sora,sans-serif">koaga</text>
+              <text id="maplbl-Otxarkoaga" x="62" y="108" text-anchor="middle" font-size="9" fill="white" opacity=".95">-</text>
+
+              <ellipse id="map-Santutxu" cx="335" cy="85" rx="40" ry="24" fill="#aaa" opacity=".85"/>
+              <text x="335" y="89" text-anchor="middle" font-size="9.5" font-weight="700" fill="white" font-family="Sora,sans-serif">Santutxu</text>
+              <text id="maplbl-Santutxu" x="335" y="102" text-anchor="middle" font-size="9" fill="white" opacity=".95">-</text>
+
+              <ellipse id="map-Basurto" cx="177" cy="246" rx="38" ry="24" fill="#aaa" opacity=".85"/>
+              <text x="177" y="250" text-anchor="middle" font-size="9.5" font-weight="700" fill="white" font-family="Sora,sans-serif">Basurto</text>
+              <text id="maplbl-Basurto" x="177" y="263" text-anchor="middle" font-size="9" fill="white" opacity=".95">-</text>
+
+              <ellipse id="map-Zorrotza" cx="44" cy="217" rx="34" ry="21" fill="#aaa" opacity=".80"/>
+              <text x="44" y="221" text-anchor="middle" font-size="9" font-weight="700" fill="white" font-family="Sora,sans-serif">Zorrotza</text>
+              <text id="maplbl-Zorrotza" x="44" y="234" text-anchor="middle" font-size="8.5" fill="white" opacity=".95">-</text>
+
+              <ellipse id="map-Uribarri" cx="360" cy="266" rx="38" ry="23" fill="#aaa" opacity=".80"/>
+              <text x="360" y="270" text-anchor="middle" font-size="9.5" font-weight="700" fill="white" font-family="Sora,sans-serif">Uribarri</text>
+              <text id="maplbl-Uribarri" x="360" y="283" text-anchor="middle" font-size="9" fill="white" opacity=".95">-</text>
+
+              <ellipse id="map-Ibarrekolanda" cx="496" cy="278" rx="44" ry="26" fill="#aaa" opacity=".80"/>
+              <text x="496" y="276" text-anchor="middle" font-size="8" font-weight="700" fill="white" font-family="Sora,sans-serif">Ibarre-</text>
+              <text x="496" y="287" text-anchor="middle" font-size="8" font-weight="700" fill="white" font-family="Sora,sans-serif">kolanda</text>
+              <text id="maplbl-Ibarrekolanda" x="496" y="300" text-anchor="middle" font-size="8.5" fill="white" opacity=".95">-</text>
+
+              <ellipse id="map-LaRibera" cx="86" cy="178" rx="30" ry="18" fill="#aaa" opacity=".80"/>
+              <text x="86" y="182" text-anchor="middle" font-size="7.5" font-weight="700" fill="white" font-family="Sora,sans-serif">La Ribera</text>
+              <text id="maplbl-LaRibera" x="86" y="193" text-anchor="middle" font-size="7.5" fill="white" opacity=".9">-</text>
+
+              <ellipse id="map-Elorrieta" cx="84" cy="195" rx="26" ry="15" fill="#aaa" opacity=".76"/>
+              <text x="84" y="198" text-anchor="middle" font-size="7" font-weight="700" fill="white" font-family="Sora,sans-serif">Elorrieta</text>
+              <text id="maplbl-Elorrieta" x="84" y="208" text-anchor="middle" font-size="7" fill="white" opacity=".9">-</text>
+
+              <ellipse id="map-Arangoiti" cx="92" cy="106" rx="30" ry="18" fill="#aaa" opacity=".80"/>
+              <text x="92" y="110" text-anchor="middle" font-size="7.5" font-weight="700" fill="white" font-family="Sora,sans-serif">Arangoiti</text>
+              <text id="maplbl-Arangoiti" x="92" y="121" text-anchor="middle" font-size="7.5" fill="white" opacity=".9">-</text>
+
+              <ellipse id="map-Bolueta" cx="432" cy="66" rx="30" ry="17" fill="#aaa" opacity=".78"/>
+              <text x="432" y="70" text-anchor="middle" font-size="7.5" font-weight="700" fill="white" font-family="Sora,sans-serif">Bolueta</text>
+              <text id="maplbl-Bolueta" x="432" y="81" text-anchor="middle" font-size="7.5" fill="white" opacity=".9">-</text>
+
+              <ellipse id="map-Urazurrutia" cx="456" cy="80" rx="33" ry="18" fill="#aaa" opacity=".78"/>
+              <text x="456" y="83" text-anchor="middle" font-size="7" font-weight="700" fill="white" font-family="Sora,sans-serif">Urazurrutia</text>
+              <text id="maplbl-Urazurrutia" x="456" y="94" text-anchor="middle" font-size="7" fill="white" opacity=".9">-</text>
+
+              <ellipse id="map-Atxuri" cx="528" cy="164" rx="28" ry="17" fill="#aaa" opacity=".78"/>
+              <text x="528" y="168" text-anchor="middle" font-size="8" font-weight="700" fill="white" font-family="Sora,sans-serif">Atxuri</text>
+              <text id="maplbl-Atxuri" x="528" y="180" text-anchor="middle" font-size="8" fill="white" opacity=".9">-</text>
+
+              <ellipse id="map-Solokoetxe" cx="553" cy="188" rx="30" ry="17" fill="#aaa" opacity=".78"/>
+              <text x="553" y="192" text-anchor="middle" font-size="7" font-weight="700" fill="white" font-family="Sora,sans-serif">Solokoetxe</text>
+              <text id="maplbl-Solokoetxe" x="553" y="203" text-anchor="middle" font-size="7" fill="white" opacity=".9">-</text>
+
+              <ellipse id="map-BilbaoLaVieja" cx="567" cy="216" rx="30" ry="17" fill="#aaa" opacity=".78"/>
+              <text x="567" y="214" text-anchor="middle" font-size="7" font-weight="700" fill="white" font-family="Sora,sans-serif">Bilbao</text>
+              <text x="567" y="224" text-anchor="middle" font-size="7" font-weight="700" fill="white" font-family="Sora,sans-serif">La Vieja</text>
+              <text id="maplbl-BilbaoLaVieja" x="567" y="236" text-anchor="middle" font-size="7" fill="white" opacity=".9">-</text>
+
+              <ellipse id="map-Miribilla" cx="542" cy="255" rx="32" ry="18" fill="#aaa" opacity=".78"/>
+              <text x="542" y="259" text-anchor="middle" font-size="8" font-weight="700" fill="white" font-family="Sora,sans-serif">Miribilla</text>
+              <text id="maplbl-Miribilla" x="542" y="271" text-anchor="middle" font-size="8" fill="white" opacity=".9">-</text>
+
+              <ellipse id="map-SanFrancisco" cx="384" cy="210" rx="34" ry="19" fill="#aaa" opacity=".78"/>
+              <text x="384" y="213" text-anchor="middle" font-size="7.5" font-weight="700" fill="white" font-family="Sora,sans-serif">San Francisco</text>
+              <text id="maplbl-SanFrancisco" x="384" y="225" text-anchor="middle" font-size="7.5" fill="white" opacity=".9">-</text>
+
+              <ellipse id="map-Larraskitu" cx="207" cy="325" rx="30" ry="17" fill="#aaa" opacity=".78"/>
+              <text x="207" y="329" text-anchor="middle" font-size="7.5" font-weight="700" fill="white" font-family="Sora,sans-serif">Larraskitu</text>
+              <text id="maplbl-Larraskitu" x="207" y="340" text-anchor="middle" font-size="7.5" fill="white" opacity=".9">-</text>
+
+              <ellipse id="map-Iralabarri" cx="246" cy="308" rx="30" ry="17" fill="#aaa" opacity=".78"/>
+              <text x="246" y="312" text-anchor="middle" font-size="7.5" font-weight="700" fill="white" font-family="Sora,sans-serif">Iralabarri</text>
+              <text id="maplbl-Iralabarri" x="246" y="323" text-anchor="middle" font-size="7.5" fill="white" opacity=".9">-</text>
+
+              <ellipse id="map-IturrigorriPenascal" cx="278" cy="330" rx="36" ry="17" fill="#aaa" opacity=".75"/>
+              <text x="278" y="328" text-anchor="middle" font-size="7" font-weight="700" fill="white" font-family="Sora,sans-serif">Iturrigorri-</text>
+              <text x="278" y="339" text-anchor="middle" font-size="7" font-weight="700" fill="white" font-family="Sora,sans-serif">Peñascal</text>
+              <text id="maplbl-IturrigorriPenascal" x="278" y="350" text-anchor="middle" font-size="7" fill="white" opacity=".9">-</text>
+
+              <ellipse id="map-Masustegi" cx="325" cy="316" rx="30" ry="17" fill="#aaa" opacity=".78"/>
+              <text x="325" y="320" text-anchor="middle" font-size="7.5" font-weight="700" fill="white" font-family="Sora,sans-serif">Masustegi</text>
+              <text id="maplbl-Masustegi" x="325" y="331" text-anchor="middle" font-size="7.5" fill="white" opacity=".9">-</text>
+
+              <ellipse id="map-SanAdrian" cx="382" cy="295" rx="30" ry="17" fill="#aaa" opacity=".78"/>
+              <text x="382" y="299" text-anchor="middle" font-size="7.5" font-weight="700" fill="white" font-family="Sora,sans-serif">San Adrián</text>
+              <text id="maplbl-SanAdrian" x="382" y="310" text-anchor="middle" font-size="7.5" fill="white" opacity=".9">-</text>
+
+              <ellipse id="map-Zurbaran" cx="412" cy="286" rx="30" ry="17" fill="#aaa" opacity=".78"/>
+              <text x="412" y="290" text-anchor="middle" font-size="7.5" font-weight="700" fill="white" font-family="Sora,sans-serif">Zurbaran</text>
+              <text id="maplbl-Zurbaran" x="412" y="301" text-anchor="middle" font-size="7.5" fill="white" opacity=".9">-</text>
+
+              <ellipse id="map-Altamira" cx="142" cy="278" rx="30" ry="17" fill="#aaa" opacity=".78"/>
+              <text x="142" y="282" text-anchor="middle" font-size="7.5" font-weight="700" fill="white" font-family="Sora,sans-serif">Altamira</text>
+              <text id="maplbl-Altamira" x="142" y="293" text-anchor="middle" font-size="7.5" fill="white" opacity=".9">-</text>
+
+              <!-- Pin top 1 -->
+              <circle id="mapPin" cx="285" cy="148" r="8" fill="white" stroke="#1A7A52" stroke-width="3" opacity="0"/>
+            </svg>
+            <div class="map-legend">
+              <div><span class="legend-dot" style="background:#1A7A52"></span>Alta compatibilidad (≥7)</div>
+              <div><span class="legend-dot" style="background:#D4900A"></span>Media (5.5–7)</div>
+              <div><span class="legend-dot" style="background:#B83030"></span>Baja (&lt;5.5)</div>
+            </div>
+          </div>
+
+          <!-- Ranking lateral -->
+          <div class="ranking-panel">
+            <div class="panel-header">
+              <h4>Ranking para tu perfil</h4>
+              <p>Haz clic para ver la ficha</p>
+            </div>
+            <div class="rank-list" id="rankingList"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 2: FICHA -->
+    <div class="screen" id="s2">
+      <div class="ficha-screen">
+        <div class="barrio-hero" id="fichaHero">
+          <div class="eyebrow" id="fichaDistr">BILBAO</div>
+          <h2 id="fichaNombre">—</h2>
+          <p id="fichaDesc">El barrio que mejor encaja con tu perfil</p>
+          <div class="score-pill" id="fichaScore">⭐ — / 10</div>
+        </div>
+        <div class="criteria-grid" id="fichaGrid"><!-- JS --></div>
+        <div class="summary-box" id="fichaSummary"></div>
+        <div class="pros-cons" id="fichaProsCons"></div>
+        <div class="ficha-cta">
+          <button class="btn-secondary" onclick="goTo(1)">← Volver al mapa</button>
+          <button class="btn-primary" onclick="goTo(3)">Comparar con otros →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 3: COMPARAR -->
+    <div class="screen" id="s3">
+      <div class="comparar-screen">
+        <h2 id="compareTitle">—</h2>
+        <p class="subtitle">Top 3 barrios para tu perfil · Open Data Bilbao, Eustat, Metro Bilbao GTFS, Mapa Acústico 2023</p>
+        <div class="compare-table-wrap">
+          <table class="compare-table" id="compareTable"><!-- JS --></table>
+        </div>
+        <div class="dataset-note">
+          <strong>Fuentes de datos:</strong> Padrón municipal 2025 · Catálogo de equipamientos Open Data Bilbao · Mapa acústico 2023 · Metro Bilbao GTFS · Eustat renta por barrio 2024 · Licencias de actividad Ayuntamiento de Bilbao
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════
+// BiziBilbao — Frontend conectado a la API real
+// API: /api/barrios?verde=3&colegios=4&tranquilidad=5&metro=4&precio=3&ocio=2
+// ══════════════════════════════════════════════════════════
+
+// URL de la API — en producción Vercel la sirve en el mismo dominio
+// En desarrollo local usa: http://localhost:3000
+const API_BASE = window.location.hostname === 'localhost'
+  ? 'http://localhost:3000'
+  : '';  // Mismo dominio en Vercel
+
+// Estado global
+const weights = { verde: 3, colegios: 4, tranquilidad: 5, metro: 4, precio: 3, ocio: 2 };
+const KEYS = ['verde','colegios','tranquilidad','metro','precio','ocio'];
+const LABELS = {
+  verde:'🌳 Zonas verdes', colegios:'🏫 Colegios',
+  tranquilidad:'🔇 Tranquilidad', metro:'🚇 Metro cerca',
+  precio:'💶 Precio bajo', ocio:'🎉 Ocio / Vida'
+};
+let lastRanking = [];
+let isLoading = false;
+
+// ── Colores y clases por score
+function scoreColor(s) {
+  if (s >= 7) return '#1A7A52';
+  if (s >= 5.5) return '#D4900A';
+  return '#B83030';
+}
+function scoreClass(s) {
+  if (s >= 7) return 'green';
+  if (s >= 5.5) return 'yellow';
+  return 'red';
+}
+
+// ── Llamada a la API
+async function fetchRanking() {
+  const params = new URLSearchParams(weights);
+  const res = await fetch(`${API_BASE}/api/barrios?${params}`);
+  if (!res.ok) throw new Error(`API error ${res.status}`);
+  const json = await res.json();
+  return json.barrios; // array ordenado por score desc
+}
+
+// ── Actualizar mapa SVG
+function updateMap(ranking) {
+  ranking.forEach(b => {
+    const el  = document.getElementById('map-' + b.id);
+    const lbl = document.getElementById('maplbl-' + b.id);
+    if (el)  el.setAttribute('fill', scoreColor(b.score));
+    if (lbl) lbl.textContent = b.score.toFixed(1);
+  });
+  // Pin en el barrio #1
+  const top = ranking[0];
+  if (!top) return;
+  const pin = document.getElementById('mapPin');
+  if (pin) {
+    // Usar coordenadas del mapa del barrio top — buscamos el ellipse
+    const el = document.getElementById('map-' + top.id);
+    if (el) {
+      pin.setAttribute('cx', el.getAttribute('cx'));
+      pin.setAttribute('cy', parseFloat(el.getAttribute('cy')) - 3);
+      pin.setAttribute('opacity', '1');
+      pin.setAttribute('stroke', scoreColor(top.score));
+    }
+  }
+}
+
+// ── Actualizar sidebar recap
+function updateRecap() {
+  const top3 = KEYS.filter(k => weights[k] >= 4)
+    .sort((a, b) => weights[b] - weights[a]).slice(0, 3);
+  const recap = document.getElementById('profileRecap');
+  recap.innerHTML = top3.map((k, i) => {
+    const stars = '★'.repeat(weights[k]) + '☆'.repeat(5 - weights[k]);
+    return `<span>${LABELS[k]} ${stars}</span>${i < top3.length - 1 ? '<span style="color:var(--fg3)">·</span>' : ''}`;
+  }).join('');
+  if (!recap.innerHTML) recap.innerHTML = '<span>Ajusta las estrellas</span>';
+}
+
+// ── Actualizar lista ranking
+function updateRankingList(ranking) {
+  const container = document.getElementById('rankingList');
+  container.innerHTML = '';
+  ranking.slice(0, 10).forEach((b, i) => {
+    const datos = b.datos || {};
+    const metro = datos.num_paradas_metro > 0
+      ? `${datos.num_paradas_metro} parada${datos.num_paradas_metro > 1 ? 's' : ''}`
+      : 'Bus';
+    const verde = datos.m2_verde_per_capita
+      ? `${datos.m2_verde_per_capita.toFixed(1)} m²/hab`
+      : '—';
+    const div = document.createElement('div');
+    div.className = 'rank-card';
+    div.onclick = () => showFicha(b.id, ranking);
+    div.innerHTML = `
+      <span class="rank-num${i < 2 ? ' top' : ''}">${i + 1}</span>
+      <div class="rank-info">
+        <h4>${b.nombre}</h4>
+        <p>${b.distrito} · ${metro} · ${verde}</p>
+      </div>
+      <span class="rank-score" style="color:${scoreColor(b.score)}">${b.score.toFixed(1)}</span>`;
+    container.appendChild(div);
+  });
+}
+
+// ── Mostrar ficha de un barrio
+function showFicha(id, ranking) {
+  const b = ranking.find(x => x.id === id) || ranking[0];
+  if (!b) return;
+  const d = b.datos || {};
+
+  document.getElementById('fichaDistr').textContent = `DISTRITO ${b.distrito.toUpperCase()} · BILBAO`;
+  document.getElementById('fichaNombre').textContent = b.nombre;
+  document.getElementById('fichaScore').textContent =
+    `⭐ ${b.score.toFixed(1)} / 10 · ${b.score >= 7 ? 'Alta' : b.score >= 5.5 ? 'Media' : 'Baja'} compatibilidad`;
+  document.getElementById('fichaSummary').textContent = `"${b.resumen || ''}"`;
+
+  const topCrit = KEYS.slice().sort((a, c) => weights[c] - weights[a]).slice(0, 4);
+  const icons = { verde:'🌳', colegios:'🏫', tranquilidad:'🔇', metro:'🚇', precio:'💶', ocio:'🎉' };
+  const vals = {
+    verde:        { val: `${(d.m2_verde_per_capita||0).toFixed(1)} m²/hab`,
+                    sub: (d.m2_verde_per_capita||0) >= 10 ? 'Por encima de la media' : 'Por debajo de la media' },
+    colegios:     { val: `${d.num_colegios||0} centro${(d.num_colegios||0) > 1 ? 's' : ''}`,
+                    sub: 'Públicos a <500 m' },
+    tranquilidad: { val: (d.nivel_ruido_db||60) <= 55 ? 'Alta' : (d.nivel_ruido_db||60) <= 58 ? 'Media' : 'Baja',
+                    sub: `~${d.nivel_ruido_db||'—'} dB (Mapa Acústico 2023)` },
+    metro:        { val: (d.num_paradas_metro||0) > 0 ? `${d.num_paradas_metro} parada${d.num_paradas_metro > 1 ? 's' : ''}` : 'Solo bus',
+                    sub: (d.num_paradas_metro||0) > 0 ? 'Metro Bilbao GTFS' : 'Bus urbano frecuente' },
+    precio:       { val: `${d.precio_alquiler_m2||'—'} €/m²`,
+                    sub: (d.precio_alquiler_m2||13) <= 11.5 ? 'Por debajo de la media' : 'Por encima de la media' },
+    ocio:         { val: (b.criterios?.ocio||0) >= 7 ? 'Alta' : (b.criterios?.ocio||0) >= 5 ? 'Media' : 'Baja',
+                    sub: 'Equipamientos culturales y deportivos' }
+  };
+
+  const grid = document.getElementById('fichaGrid');
+  grid.innerHTML = topCrit.map(k => {
+    const v = vals[k];
+    const score = b.criterios?.[k] || 0;
+    const col = score >= 7 ? 'var(--green)' : score >= 5 ? 'var(--yellow)' : 'var(--red)';
+    return `<div class="crit-card">
+      <div class="crit-icon">${icons[k]}</div>
+      <div class="crit-label">${LABELS[k].replace(/[🌳🏫🔇🚇💶🎉]\s/,'').toUpperCase()}</div>
+      <div class="crit-val" style="color:${col}">${v.val}</div>
+      <div class="crit-sub">${v.sub}</div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('fichaProsCons').innerHTML = `
+    <div class="pro-col">
+      <h4>✓ Puntos fuertes</h4>
+      ${(b.pros||[]).map(p => `<div class="pc-item">· ${p}</div>`).join('')}
+    </div>
+    <div class="con-col">
+      <h4>✗ A tener en cuenta</h4>
+      ${(b.contras||[]).map(c => `<div class="pc-item">· ${c}</div>`).join('')}
+    </div>`;
+
+  goTo(2);
+}
+
+// ── Actualizar tabla comparativa
+function updateComparar(ranking) {
+  const top3 = ranking.slice(0, 3);
+  document.getElementById('compareTitle').textContent = top3.map(b => b.nombre).join(' · ');
+  const rows = [
+    { lbl: '⭐ Score total',        fn: b => b.score.toFixed(1),                         numFn: b => b.score },
+    { lbl: '🚇 Paradas metro',      fn: b => String(b.datos?.num_paradas_metro||0),       numFn: b => b.datos?.num_paradas_metro||0 },
+    { lbl: '🏫 Colegios <500m',     fn: b => String(b.datos?.num_colegios||0),            numFn: b => b.datos?.num_colegios||0 },
+    { lbl: '🌳 m² verde/hab',       fn: b => (b.datos?.m2_verde_per_capita||0).toFixed(1),numFn: b => b.datos?.m2_verde_per_capita||0 },
+    { lbl: '🔇 Ruido (dB)',         fn: b => String(b.datos?.nivel_ruido_db||0),          numFn: b => -(b.datos?.nivel_ruido_db||99) },
+    { lbl: '💶 Alquiler €/m²',      fn: b => `${b.datos?.precio_alquiler_m2||0} €`,       numFn: b => -(b.datos?.precio_alquiler_m2||99) },
+    { lbl: '👥 Edad media vecinos', fn: b => String(b.datos?.edad_media||0),              numFn: b => -(b.datos?.edad_media||99) },
+  ];
+  const table = document.getElementById('compareTable');
+  table.innerHTML = `<thead><tr>
+    <th></th>${top3.map(b => `<th class="barrio-head">${b.nombre}</th>`).join('')}
+  </tr></thead><tbody>
+    ${rows.map(r => {
+      const vals = top3.map(r.numFn);
+      const maxVal = Math.max(...vals);
+      return `<tr><td>${r.lbl}</td>${top3.map((b, i) =>
+        `<td class="${vals[i] === maxVal ? 'winner' : ''}">${r.fn(b)}</td>`
+      ).join('')}</tr>`;
+    }).join('')}
+  </tbody>`;
+}
+
+// ── Mostrar estado de carga
+function setLoading(show) {
+  isLoading = show;
+  const btn = document.querySelector('.cta-btn');
+  if (btn) btn.textContent = show ? 'Calculando…' : 'Ver ranking de barrios →';
+}
+
+// ── Mostrar error
+function showError(msg) {
+  const sub = document.getElementById('mapSub');
+  if (sub) sub.textContent = `⚠️ ${msg}`;
+}
+
+// ── Recalcular y navegar al mapa
+async function recalcAndGo() {
+  if (isLoading) return;
+  setLoading(true);
+  try {
+    const ranking = await fetchRanking();
+    lastRanking = ranking;
+    updateMap(ranking);
+    updateRecap();
+    updateRankingList(ranking);
+    updateComparar(ranking);
+    goTo(1);
+  } catch (err) {
+    console.error('Error al calcular ranking:', err);
+    showError('No se pudo conectar con el servidor. Comprueba que el backend está activo.');
+  } finally {
+    setLoading(false);
+  }
+}
+
+// ── Navegación entre pantallas
+function goTo(idx) {
+  document.querySelectorAll('.screen').forEach((s, i) => s.classList.toggle('active', i === idx));
+  document.querySelectorAll('.nav-tab').forEach((b, i) => b.classList.toggle('active', i === idx));
+  const activeScreen = document.getElementById('s' + idx);
+  if (activeScreen) activeScreen.scrollTop = 0;
+}
+
+// ── Estrellas interactivas
+document.querySelectorAll('.slider-stars').forEach(group => {
+  const key = group.dataset.key;
+  const stars = group.querySelectorAll('.star');
+  stars.forEach((star, idx) => {
+    star.addEventListener('click', () => {
+      weights[key] = idx + 1;
+      stars.forEach((s, i) => {
+        s.classList.toggle('on',  i <= idx);
+        s.classList.toggle('off', i > idx);
+      });
+      updateRecap();
+      // Recalcula si ya hay un ranking cargado
+      if (lastRanking.length > 0) recalcAndGo();
+    });
+  });
+});
+
+// ── Opts interactivas (perfil)
+document.querySelectorAll('.option-row').forEach(row => {
+  row.querySelectorAll('.opt').forEach(opt => {
+    opt.addEventListener('click', () => opt.classList.toggle('selected'));
+  });
+});
+
+// ── Click en mapa SVG → ficha
+document.getElementById('mapSvg').addEventListener('click', e => {
+  const el = e.target.closest('ellipse');
+  if (!el) return;
+  const id = el.id.replace('map-', '');
+  const b = lastRanking.find(x => x.id === id);
+  if (b) showFicha(b.id, lastRanking);
+});
+
+// ── Inicializar: precarga el mapa con pesos por defecto
+(async function init() {
+  updateRecap();
+  try {
+    const ranking = await fetchRanking();
+    lastRanking = ranking;
+    updateMap(ranking);
+    updateRankingList(ranking);
+    updateComparar(ranking);
+    const sub = document.getElementById('mapSub');
+    if (sub) sub.textContent = `${ranking.length} barrios analizados · coloreados según tu perfil`;
+  } catch (err) {
+    console.warn('No se pudo precargar el ranking (backend no disponible):', err.message);
+    // App funciona en modo offline básico si la API no responde
+  }
+})();
+</script>
+</body>
+</html>
