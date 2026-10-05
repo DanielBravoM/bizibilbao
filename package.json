@@ -1,0 +1,21 @@
+{
+  "name": "bizibilbao",
+  "version": "1.0.0",
+  "description": "Encuentra tu barrio ideal en Bilbao — Proyecto Open Data Ayuntamiento de Bilbao",
+  "scripts": {
+    "dev": "vercel dev",
+    "seed": "node scripts/seed.js",
+    "deploy": "vercel --prod"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.0",
+    "dotenv": "^18.0.5",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "vercel": "^33.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
