@@ -53,7 +53,7 @@ const BARRIOS_DATA = [
     resumen: 'Barrio residencial tranquilo en las laderas de Deusto con buenas vistas.'
   },
   {
-    id: 'ZorrotZa', nombre: 'Zorrotza', distrito: 'Deusto',
+    id: 'Zorrotza', nombre: 'Zorrotza', distrito: 'Deusto',
     m2_verde_per_capita: 15.2, num_colegios: 4, nivel_ruido_db: 57.8,
     num_paradas_metro: 1, precio_alquiler_m2: 8.5, num_equipamientos_ocio: 8,
     poblacion: 8943, edad_media: 46.7,
@@ -141,7 +141,7 @@ const BARRIOS_DATA = [
     resumen: 'El corazón histórico de Bilbao: máxima vida cultural y gastronómica.'
   },
   {
-    id: 'Bilbao la Vieja', nombre: 'Bilbao la Vieja', distrito: 'Ibaiondo',
+    id: 'BilbaoLaVieja', nombre: 'Bilbao la Vieja', distrito: 'Ibaiondo',
     m2_verde_per_capita: 4.5, num_colegios: 3, nivel_ruido_db: 65.2,
     num_paradas_metro: 2, precio_alquiler_m2: 10.8, num_equipamientos_ocio: 18,
     poblacion: 9870, edad_media: 38.4,
@@ -159,7 +159,7 @@ const BARRIOS_DATA = [
     resumen: 'Barrio moderno en altura con urbanismo contemporáneo y vistas a la ciudad.'
   },
   {
-    id: 'Iturrigorri-Peñascal', nombre: 'Iturrigorri-Peñascal', distrito: 'Ibaiondo',
+    id: 'IturrigorriPenascal', nombre: 'Iturrigorri-Peñascal', distrito: 'Ibaiondo',
     m2_verde_per_capita: 14.8, num_colegios: 2, nivel_ruido_db: 50.3,
     num_paradas_metro: 0, precio_alquiler_m2: 8.1, num_equipamientos_ocio: 4,
     poblacion: 3450, edad_media: 51.2,
@@ -354,6 +354,71 @@ const BARRIOS_DATA = [
     pros: ['Muy verde', 'Muy tranquilo', 'Económico'],
     contras: ['Sin transporte', 'Muy pocos servicios'],
     resumen: 'Barrio periférico muy verde y tranquilo, ideal para quienes valoran la calma total.'
+  },
+
+  // Barrios del mapa SVG que faltaban en el seed
+  {
+    id: 'Elorrieta', nombre: 'Elorrieta', distrito: 'Uribarri',
+    m2_verde_per_capita: 8.9, num_colegios: 4, nivel_ruido_db: 58.6,
+    num_paradas_metro: 1, precio_alquiler_m2: 9.6, num_equipamientos_ocio: 8,
+    poblacion: 7230, edad_media: 45.4,
+    pros: ['Tranquilo', 'Familiar', 'Buen acceso'],
+    contras: ['Poco ocio', 'Servicios justos'],
+    resumen: 'Barrio residencial familiar entre Uribarri y Txurdinaga, tranquilo y asequible.'
+  },
+  {
+    id: 'Ibarrekolanda', nombre: 'Ibarrekolanda', distrito: 'Uribarri',
+    m2_verde_per_capita: 10.2, num_colegios: 3, nivel_ruido_db: 56.1,
+    num_paradas_metro: 1, precio_alquiler_m2: 9.3, num_equipamientos_ocio: 6,
+    poblacion: 5890, edad_media: 46.8,
+    pros: ['Tranquilo', 'Zonas verdes', 'Asequible'],
+    contras: ['Poca animación', 'Comercio escaso'],
+    resumen: 'Barrio tranquilo con buenas zonas verdes en la zona norte de Bilbao.'
+  },
+  {
+    id: 'LaRibera', nombre: 'La Ribera', distrito: 'Ibaiondo',
+    m2_verde_per_capita: 4.1, num_colegios: 3, nivel_ruido_db: 63.8,
+    num_paradas_metro: 2, precio_alquiler_m2: 11.8, num_equipamientos_ocio: 16,
+    poblacion: 7640, edad_media: 40.5,
+    pros: ['Mercado de La Ribera', 'Muy céntrico', 'Gran oferta gastronómica', 'Metro'],
+    contras: ['Caro', 'Ruidoso', 'Turistas en verano'],
+    resumen: 'Zona junto al Mercado de La Ribera, icono gastronómico y punto neurálgico del Casco.'
+  },
+  {
+    id: 'SanAdrian', nombre: 'San Adrián', distrito: 'Abando',
+    m2_verde_per_capita: 6.8, num_colegios: 4, nivel_ruido_db: 61.2,
+    num_paradas_metro: 2, precio_alquiler_m2: 12.1, num_equipamientos_ocio: 14,
+    poblacion: 9120, edad_media: 42.7,
+    pros: ['Muy céntrico', 'Metro', 'Buena oferta comercial'],
+    contras: ['Precio elevado', 'Ruidoso'],
+    resumen: 'Barrio céntrico bien comunicado entre Abando e Indautxu.'
+  },
+  {
+    id: 'SanFrancisco', nombre: 'San Francisco', distrito: 'Ibaiondo',
+    m2_verde_per_capita: 3.5, num_colegios: 4, nivel_ruido_db: 66.4,
+    num_paradas_metro: 2, precio_alquiler_m2: 9.8, num_equipamientos_ocio: 15,
+    poblacion: 10340, edad_media: 37.8,
+    pros: ['Diversidad cultural', 'Asequible para el centro', 'Metro', 'Ambiente joven'],
+    contras: ['Zona de alta densidad', 'Más ruidoso', 'En proceso de mejora'],
+    resumen: 'Barrio multicultural junto al Casco Viejo, con precios asequibles y mucha vida.'
+  },
+  {
+    id: 'Urazurrutia', nombre: 'Urazurrutia', distrito: 'Ibaiondo',
+    m2_verde_per_capita: 4.8, num_colegios: 3, nivel_ruido_db: 62.9,
+    num_paradas_metro: 1, precio_alquiler_m2: 10.5, num_equipamientos_ocio: 9,
+    poblacion: 5430, edad_media: 43.1,
+    pros: ['Céntrico', 'Comunidad activa', 'Acceso metro'],
+    contras: ['Pocas zonas verdes', 'Denso'],
+    resumen: 'Barrio compacto junto al Casco Viejo con buena comunidad de vecinos.'
+  },
+  {
+    id: 'Zurbaran', nombre: 'Zurbarán', distrito: 'Abando',
+    m2_verde_per_capita: 7.2, num_colegios: 5, nivel_ruido_db: 62.1,
+    num_paradas_metro: 2, precio_alquiler_m2: 13.6, num_equipamientos_ocio: 16,
+    poblacion: 8950, edad_media: 44.3,
+    pros: ['Zona exclusiva', 'Gran Vía', 'Metro', 'Bellas Artes a pie'],
+    contras: ['Precio muy alto', 'Ruidoso en horas punta'],
+    resumen: 'Barrio señorial entre la Gran Vía y el Museo de Bellas Artes, el más exclusivo de Abando.'
   }
 ];
 
